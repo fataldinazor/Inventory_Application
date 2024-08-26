@@ -1,11 +1,11 @@
-const {Client}= require('pg');
-const path = require('path');
-require('dotenv').config({
-    override:true,
-    path:path.join(__dirname, "../.env.development")
-})
+const { Client } = require("pg");
+const path = require("path");
+require("dotenv").config({
+  override: true,
+  path: path.join(__dirname, "../.env.development"),
+});
 
-const SQL=`
+const SQL = `
 CREATE TABLE IF NOT EXISTS developers(
 developer_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 developer VARCHAR(127)
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS games(
 game_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 name VARCHAR(255) NOT NULL,
 description VARCHAR(1000),
-cover_image VARCHAR(255),
+game_image VARCHAR(255),
 rating DECIMAL(2,1),
 year INTEGER,
 developer_id INTEGER,
@@ -24,7 +24,8 @@ FOREIGN KEY (developer_id) REFERENCES developers(developer_id)
 
 CREATE TABLE IF NOT EXISTS genres(
 genre_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-genre VARCHAR(127)
+genre VARCHAR (127),
+genre_image VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS games_genres(
@@ -35,15 +36,20 @@ FOREIGN KEY (game_id) REFERENCES games(game_id) ON DELETE CASCADE,
 FOREIGN KEY (genre_id) REFERENCES genres(genre_id) ON DELETE CASCADE
 );
 
-INSERT INTO genres (genre) 
+INSERT INTO genres (genre, genre_image) 
 VALUES
-('Action'), ('Horror'), ('Open World'), ('Sports'), ('Shooting'), ('Story');
+('Action', 'https://m.media-amazon.com/images/M/MV5BODMzM2EyYmUtYzEyYS00NmVmLThlMGQtMDdlNzZiYTI4YmRjXkEyXkFqcGdeQXVyNjUxNDQwMzA@._V1_.jpg'),
+('Horror', 'https://m.media-amazon.com/images/M/MV5BOTVlYWVmOTYtNGI3OS00YWUyLTlkZDItMDA4ZWZiNjVmZmZmXkEyXkFqcGdeQXVyMjM5NzU3OTM@._V1_.jpg'), 
+('Open World', 'https://m.media-amazon.com/images/M/MV5BMzFjNzAzMDctNjVjNy00YTI3LWExMTctNjVmMDFlYTE1N2RlXkEyXkFqcGc@._V1_.jpg'), 
+('Sports', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxC3mJFPfarS6ArTgxv8ZmhL5J6w2gTlgkiA&s'), 
+('Shooting', 'https://m.media-amazon.com/images/M/MV5BNDNjMDQwMTItMWU4Yy00MGEwLWFhYTUtZWQ2ODkzMzM0YTJkXkEyXkFqcGdeQXVyNzczNzE5MTg@._V1_.jpg'), 
+('Story', 'https://m.media-amazon.com/images/M/MV5BYzhkZTk1YmQtMWY1Yi00NTBlLWJkNTMtYjI2M2FmYzkzYzdlXkEyXkFqcGdeQXVyNjYwMTAzNDU@._V1_.jpg');
 
 INSERT INTO developers (developer)
 VALUES 
 ('Activsion'), ('Capcom'), ('EA Sports'), ('Epic Games'), ('Rockstar Games'), ('Sony'), ('Steam'), ('Ubisoft');
 
-INSERT INTO games (name, description, cover_image, rating, year, developer_id ) 
+INSERT INTO games (name, description, game_image, rating, year, developer_id ) 
 VALUES
 ('Grand Theft Auto V', 'An open-world action-adventure game set in the fictional state of San Andreas.', 'https://m.media-amazon.com/images/M/MV5BYjEzMTM4ZmQtZTEzYS00ZGVmLTkwM2EtNWNmMDI4OWQ0MjBmXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_.jpg', 9.5, 2013, 5),
 ('God of War', 'An action-adventure game following Kratos and his son on a quest in Norse mythology.', 'https://m.media-amazon.com/images/M/MV5BZjc2NmExYWEtMTllNi00NTc5LTliZDgtMWRmMjQzMjg1NDJmXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_.jpg', 9.6, 2018, 6),
@@ -54,17 +60,17 @@ VALUES
 INSERT INTO games_genres (game_id, genre_id)
 VALUES
 (1,1),(1,3),(1,6),(2,1),(2,6),(3,1),(3,5),(3,6),(4,1),(4,2),(4,5),(4,6),(5,4);
-`
+`;
 
-async function main(){
-    console.log("seeding...");
-    const client = new Client({
-        connectionString: process.env.DATABASE_URL
-    })
-    await client.connect();
-    await client.query(SQL);
-    await client.end();
-    console.log("done");
+async function main() {
+  console.log("seeding...");
+  const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+  });
+  await client.connect();
+  await client.query(SQL);
+  await client.end();
+  console.log("done");
 }
 
 main();

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/output.css" />
+    <title>Genres</title>
+  </head>
+  <body class="bg-gray-100 text-gray-900">
+    <%- include("./header.ejs") %>
+    <div class="container mx-auto p-8">
+      <h1 class="text-4xl font-bold text-center mb-8">Game Genres</h1>
+
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+      >
+        <% genres.forEach(genre => { %>
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+          <img
+            class="w-full h-64 object-cover"
+            src="<%= genre.genre_image %>"
+            alt="<%= genre.genre %>"
+          />
+          <div class="p-4">
+            <a
+              href="/genres/<%=genre.genre_id%>"
+              class="text-xl font-semibold text-center text-gray-800 cursor-pointer"
+            >
+              <%= genre.genre %>
+            </a>
+          </div>
+        </div>
+        <% }) %>
+
+        <!-- New Genre Card -->
+        <a
+          href="genres/create"
+          class="bg-white rounded-lg shadow-lg overflow-hidden flex justify-center items-center hover:bg-gray-200 transition duration-300"
+        >
+          <div class="text-center p-4">
+            <div class="text-6xl text-gray-600 font-bold">+</div>
+            <p class="text-gray-800 mt-2">Add New Genre</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

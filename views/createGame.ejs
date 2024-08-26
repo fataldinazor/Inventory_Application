@@ -1,66 +1,141 @@
 <html>
-    <body>
-        <h1>Upload New Game Entry</h1>
-        <form action="/create" method="POST">
-            <label for="gameName">Name*:
-                <input type="text" name="gameName" id="gameName" required>
-            </label>
-            <label for="gameDesc">Description:
-                <textarea name="gameDesc" id="gameDesc"></textarea>
-            </label>
-            <label for="gameGenre">Genre*:
-                <label>
-                    <input type="checkbox" name="gameGenres[]" value="action">
-                    Action
-                </label>
-                
-                <label>
-                    <input type="checkbox" name="gameGenres[]" value="horror">
-                    Horror
-                </label>
-                
-                <label>
-                    <input type="checkbox" name="gameGenres[]" value="openWorld">
-                    Open World
-                </label>
-                
-                <label>
-                    <input type="checkbox" name="gameGenres[]" value="sports">
-                    Sports
-                </label>
-                
-                <label>
-                    <input type="checkbox" name="gameGenres[]" value="shooting">
-                    Shooting
-                </label>
-                
-                <label>
-                    <input type="checkbox" name="gameGenres[]" value="story">
-                    Story
-                </label>
-            </label>
-            <label for="gameDeveloper">Developer:
-                <select name="gameDeveloper">
-                    <option value="activision">Activision</option>
-                    <option value="capcom">Capcom</option>
-                    <option value="ea">Electronics Art</option>
-                    <option value="epicGames">Epic Games</option>
-                    <option value="rocktstarGames">Rockstar Games</option>
-                    <option value="sony">Sony</option>
-                    <option value="steam">Steam</option>
-                    <option value="ubisoft">Ubisoft</option>
-                </select>
-            </label>
-            <label for="gameImage">Cover Image (Enter Image Link)*:
-                <input type="text" name="gameImage" accept="image/*" maxlength="255" required>
-            </label>
-            <label for="gameRating">Ratings:
-                <input type="number" min="0" max="10" step="0.1" name="gameRating">
-            </label>
-            <label for="GameYear">Release Year:
-                <input type="number" min="1960" max="2099" step="1" value="2015">
-            </label>
-            <button type="subimt">Submit</button>
-        </form>
-    </body>
+  <head>
+    <link rel="stylesheet" href="styles/output.css" />
+  </head>
+  <body class="bg-gray-50">
+    <%-include("./header.ejs")%>
+    <h1 class="text-3xl font-bold text-center mb-8 mt-6">
+      Upload New Game Entry
+    </h1>
+
+    <form
+      action="/create"
+      method="POST"
+      class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg"
+    >
+      <!-- Game Name -->
+      <div class="mb-4">
+        <label for="gameName" class="block text-gray-700 font-semibold mb-2">
+          Name*:
+        </label>
+        <input
+          type="text"
+          name="gameName"
+          id="gameName"
+          placeholder="Enter Game Name"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Game Description -->
+      <div class="mb-4">
+        <label for="gameDesc" class="block text-gray-700 font-semibold mb-2">
+          Description:
+        </label>
+        <textarea
+          name="gameDesc"
+          id="gameDesc"
+          maxlength="1000"
+          placeholder="Enter Description under 1000 characters"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        ></textarea>
+      </div>
+
+      <!-- Game Genre -->
+      <div class="mb-4">
+        <label class="block text-gray-700 font-semibold mb-2">Genres*:</label>
+        <div class="flex flex-wrap">
+          <% genres.forEach(genre => { %>
+          <label class="inline-flex items-center mr-4 mb-2">
+            <input
+              type="checkbox"
+              name="gameGenres[]"
+              value="<%= genre.genre_id %>"
+              class="form-checkbox h-4 w-4 text-blue-600"
+            />
+            <span class="ml-2 text-gray-700"><%= genre.genre %></span>
+          </label>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Game Developer -->
+      <div class="mb-4">
+        <label
+          for="gameDeveloper"
+          class="block text-gray-700 font-semibold mb-2"
+        >
+          Developer:
+        </label>
+        <select
+          name="gameDeveloper"
+          id="gameDeveloper"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <% developers.forEach(developer => { %>
+          <option value="<%= developer.id %>">
+            <%= developer.developer %>
+          </option>
+          <% }) %>
+        </select>
+      </div>
+
+      <!-- Cover Image -->
+      <div class="mb-4">
+        <label for="gameImage" class="block text-gray-700 font-semibold mb-2">
+          Cover Image*:
+        </label>
+        <input
+          type="text"
+          name="gameImage"
+          maxlength="255"
+          placeholder="Enter IMDB Image Link"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Ratings -->
+      <div class="mb-4">
+        <label for="gameRating" class="block text-gray-700 font-semibold mb-2">
+          Ratings:
+        </label>
+        <input
+          type="number"
+          min="0"
+          max="10"
+          step="0.1"
+          name="gameRating"
+          placeholder="Ratings out of 10"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Release Year -->
+      <div class="mb-4">
+        <label for="gameYear" class="block text-gray-700 font-semibold mb-2">
+          Release Year:
+        </label>
+        <input
+          type="number"
+          min="1960"
+          max="2099"
+          step="1"
+          value="2015"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button
+          type="submit"
+          class="w-full mt-5 bg-blue-600 text-white font-semibold px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </body>
 </html>
