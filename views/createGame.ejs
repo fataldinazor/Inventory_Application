@@ -1,0 +1,66 @@
+<html>
+    <body>
+        <h1>Upload New Game Entry</h1>
+        <form action="/create" method="POST">
+            <label for="gameName">Name*:
+                <input type="text" name="gameName" id="gameName" required>
+            </label>
+            <label for="gameDesc">Description:
+                <textarea name="gameDesc" id="gameDesc"></textarea>
+            </label>
+            <label for="gameGenre">Genre*:
+                <label>
+                    <input type="checkbox" name="gameGenres[]" value="action">
+                    Action
+                </label>
+                
+                <label>
+                    <input type="checkbox" name="gameGenres[]" value="horror">
+                    Horror
+                </label>
+                
+                <label>
+                    <input type="checkbox" name="gameGenres[]" value="openWorld">
+                    Open World
+                </label>
+                
+                <label>
+                    <input type="checkbox" name="gameGenres[]" value="sports">
+                    Sports
+                </label>
+                
+                <label>
+                    <input type="checkbox" name="gameGenres[]" value="shooting">
+                    Shooting
+                </label>
+                
+                <label>
+                    <input type="checkbox" name="gameGenres[]" value="story">
+                    Story
+                </label>
+            </label>
+            <label for="gameDeveloper">Developer:
+                <select name="gameDeveloper">
+                    <option value="activision">Activision</option>
+                    <option value="capcom">Capcom</option>
+                    <option value="ea">Electronics Art</option>
+                    <option value="epicGames">Epic Games</option>
+                    <option value="rocktstarGames">Rockstar Games</option>
+                    <option value="sony">Sony</option>
+                    <option value="steam">Steam</option>
+                    <option value="ubisoft">Ubisoft</option>
+                </select>
+            </label>
+            <label for="gameImage">Cover Image (Enter Image Link)*:
+                <input type="text" name="gameImage" accept="image/*" maxlength="255" required>
+            </label>
+            <label for="gameRating">Ratings:
+                <input type="number" min="0" max="10" step="0.1" name="gameRating">
+            </label>
+            <label for="GameYear">Release Year:
+                <input type="number" min="1960" max="2099" step="1" value="2015">
+            </label>
+            <button type="subimt">Submit</button>
+        </form>
+    </body>
+</html>
