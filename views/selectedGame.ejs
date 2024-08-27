@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/output.css" />
+    <title>Game Details</title>
+  </head>
+  <body class="bg-gray-100 text-gray-900">
+    <div
+      class="container mx-auto p-8 flex items-start bg-white shadow-lg rounded-lg"
+    >
+      <!-- Left side: Image -->
+      <img
+        class="w-1/3 h-full object-cover rounded-l-lg"
+        src="<%=game.game_image%>"
+        alt="<%=game.name%>"
+      />
+
+      <!-- Right side: Game info -->
+      <div class="w-2/3 p-8">
+        <h1 class="text-4xl font-bold mb-4"><%= game.name %></h1>
+        <p class="text-gray-600 mb-2 font-medium">
+          Developer: <%=game.developer%>
+        </p>
+        <p class="text-gray-600 mb-4">Released: <%= game.year %></p>
+
+        <!-- Genres as capsules -->
+        <ul class="flex flex-wrap gap-2 mb-4">
+          <% genres.forEach(genre => { %>
+          <li class="bg-gray-200 text-gray-700 px-4 py-1 rounded-full text-sm">
+            <%=genre.genre%>
+          </li>
+          <% }) %>
+        </ul>
+
+        <p class="text-gray-700 leading-relaxed mb-6">
+          <%= game.description %>
+        </p>
+
+        <h3 class="text-2xl font-semibold">Rating: <%=game.rating%></h3>
+      </div>
+    </div>
+  </body>
+</html>

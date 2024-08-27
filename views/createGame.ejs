@@ -74,7 +74,7 @@
           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <% developers.forEach(developer => { %>
-          <option value="<%= developer.id %>">
+          <option value="<%= developer.developer_id %>">
             <%= developer.developer %>
           </option>
           <% }) %>
@@ -123,6 +123,7 @@
           max="2099"
           step="1"
           value="2015"
+          name="gameYear"
           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>

@@ -3,6 +3,7 @@ const storeRouter = express.Router();
 const storeController = require("../controllers/storeControllers");
 
 storeRouter.get("/", storeController.getAllGames);
+storeRouter.get("/games/:game_id", storeController.getSelectedGameDetails)
 storeRouter.get("/create", storeController.getNewGame);
 storeRouter.post("/create", storeController.postNewGame);
 

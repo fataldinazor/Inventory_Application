@@ -4,30 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../styles/output.css" />
-    <title><%=games[0].genre%></title>
+    <title><%=genre%></title>
   </head>
   <body class="bg-gray-100 text-gray-900">
     <%- include("./header.ejs") %>
     <div class="container mx-auto p-8">
-      <h1 class="text-4xl font-bold mb-8 text-center"><%=games[0].genre%></h1>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <% games.forEach(game => { %>
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-          <img
-            class="w-full object-cover"
-            src="<%=game.game_image%>"
-            alt="<%=game.name%>"
-          />
-          <div class="p-6">
-            <h2 class="text-xl font-semibold mb-2"><%=game.name%></h2>
-            <p class="text-gray-500 mb-4"><i><%=game.year%></i></p>
-            <p class="text-gray-700 leading-relaxed mb-4">
-              <%=game.description%>
-            </p>
-          </div>
-        </div>
-        <% }) %>
+      <h1 class="text-4xl font-bold mb-8 text-center"><%=genre%></h1>
+      <%-include('./games.ejs')%>
       </div>
     </div>
   </body>

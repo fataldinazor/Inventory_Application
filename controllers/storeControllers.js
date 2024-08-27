@@ -17,9 +17,23 @@ async function getNewGame(req, res) {
 }
 
 async function postNewGame(req, res) {
+  const info = req.body;
+  const id = await db.updateGamesTable(info);
+  console.log(id[0].game_id);
+  await db.updateGamesGenresTable(info.gameGenres, id[0].game_id);
+  console.log("done");
   res.redirect("/");
 }
 
+async function getSelectedGameDetails(req, res) {
+  const game = await db.getSelectedGameDetails(req.params.game_id);
+  const genres = await db.getSelectedGameGenres(req.params.game_id);
+  console.log(game, genres);
+  res.render("selectedGame.ejs", {
+    game: game,
+    genres: genres,
+  });
+}
 async function getAllGenres(req, res) {
   const genres = await db.getAllGenres();
   res.render("genres", {
@@ -39,11 +53,11 @@ async function postNewGenre(req, res) {
 async function getGenreGames(req, res) {
   const params = req.params.id;
   const games = await db.getGenreGames(params);
-  console.log(games);
-  res.render("genreGames",{
-    games:games
-  })
-  // res.redirect("/genres");
+  const genre = await db.getGenre(params);
+  res.render("genreGames", {
+    games: games,
+    genre: genre[0].genre,
+  });
 }
 
 module.exports = {
@@ -54,4 +68,5 @@ module.exports = {
   getNewGenre,
   postNewGenre,
   getGenreGames,
+  getSelectedGameDetails,
 };

@@ -1,7 +1,7 @@
 const pool = require("./pool.js");
 
 async function getAllGames() {
-  const query = `SELECT name, description, game_image, year FROM games;`;
+  const query = `SELECT game_id, name, description, game_image, year FROM games;`;
   const { rows } = await pool.query(query);
   return rows;
 }
@@ -9,6 +9,53 @@ async function getAllGames() {
 async function getAllGenres() {
   const { rows } = await pool.query(`SELECT * FROM genres`);
   return rows;
+}
+
+async function updateGamesTable(info) {
+  const query = `INSERT INTO games (name, description, game_image, rating, year, developer_id) 
+    VALUES
+    ($1, $2, $3, $4, $5, $6) RETURNING game_id `;
+  const { rows } = await pool.query(query, [
+    info.gameName,
+    info.gameDesc,
+    info.gameImage,
+    info.gameRating,
+    info.gameYear,
+    info.gameDeveloper,
+  ]);
+  return rows;
+}
+
+async function getSelectedGameDetails(id) {
+  const query = `SELECT games.name, games.description,games.game_image,rating, games.year, developers.developer
+    FROM games 
+    INNER JOIN developers 
+    ON games.developer_id=developers.developer_id
+    WHERE games.game_id=$1;`;
+  const { rows } = await pool.query(query, [id]);
+  return rows[0];
+}
+
+async function getSelectedGameGenres(id) {
+  const query = `SELECT genres.genre
+        FROM games 
+        LEFT JOIN games_genres ON games.game_id=games_genres.game_id
+        LEFT JOIN genres ON games_genres.genre_id= genres.genre_id 
+        WHERE games.game_id=$1`;
+  const { rows } = await pool.query(query, [id]);
+  return rows;
+}
+
+async function updateGamesGenresTable(genre_ids, game_id) {
+  for (const genre_id of genre_ids) {
+    await pool.query(
+      `INSERT INTO games_genres (game_id, genre_id) 
+      VALUES 
+      ($1, $2)`,
+      [game_id, genre_id]
+    );
+  }
+  return;
 }
 
 async function getGenreGames(id) {
@@ -20,7 +67,12 @@ async function getGenreGames(id) {
                     ON games_genres.genre_id=genres.genre_id
                     WHERE genres.genre_id=$1;
 `;
-  const {rows}= await pool.query(query,[id]);
+  const { rows } = await pool.query(query, [id]);
+  return rows;
+}
+async function getGenre(id) {
+  const query = `SELECT genre FROM genres WHERE genre_id=$1`;
+  const { rows } = await pool.query(query, [id]);
   return rows;
 }
 
@@ -34,13 +86,15 @@ async function postNewGenre(info) {
   return await pool.query(query, [info.genre, info.genre_image]);
 }
 
-// async function postNewGame(gameInfo) {
-//     const query=`INSERT INTO games `
-// }
 module.exports = {
   getAllGames,
   getAllGenres,
   getAllDevelopers,
   postNewGenre,
   getGenreGames,
+  getGenre,
+  updateGamesTable,
+  updateGamesGenresTable,
+  getSelectedGameDetails,
+  getSelectedGameGenres,
 };
