@@ -1,7 +1,11 @@
 const express= require('express');
 const app= express();
 const path=require('path');
-const PORT= process.env.APP_PORT || 3000;
+require('dotenv').config({
+    override:true,
+    path:path.resolve(__dirname,"./.env.development")
+});
+const PORT= process.env.PORT;
 
 //routes'
 const storeRouters= require("./routes/storeRouter")
